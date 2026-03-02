@@ -1,6 +1,6 @@
 #die {
   height: 100px;
-  width: 100px;
-  background-color: lightgray; /* Feel free to customize */
+  width: 250px;
+  background-color: rgb(74, 207, 201); /* Feel free to customize */
   position: relative;
 }
