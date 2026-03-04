@@ -47,7 +47,7 @@ $("body").on("keydown", handleKeyDown);
 init();
 
 function init() {
-  // TODO 5, Part 2: initialize the snake
+  // TODO 5, Part 3: initialize the snake
   snake.body = [];
   makeSnakeSquare(10, 10);
   makeSnakeSquare(10, 9);
@@ -58,6 +58,7 @@ function init() {
   makeApple();
 
   // TODO 6, Part 1: Initialize the interval
+  updateInterval = setInterval(update, 100);
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -70,6 +71,17 @@ function init() {
  */
 function update() {
   // TODO 6, Part 2: Fill in the update function's code block
+  if (started) {
+    moveSnake();
+  }
+
+  if (hasHitWall() || hasCollidedWithSnake()) {
+    endGame();
+  }
+
+  if (hasCollidedWithApple()) {
+    handleAppleCollision();
+  }
 }
 
 function checkForNewDirection(event) {
@@ -86,7 +98,7 @@ function checkForNewDirection(event) {
 
   // FILL IN THE REST
 
-  // console.log(snake.head.direction);     // uncomment me!
+  // console.log(snake.head.direction);     //
 }
 
 function moveSnake() {
@@ -208,28 +220,27 @@ function makeApple() {
 function makeSnakeSquare(row, column) {
   // TODO 5, Part 2: Fill in this function's code block
   // initialize a new snakeSquare Object
-const snakeSquare = {};
+  const snakeSquare = {};
 
-// make the snakeSquare element and add it to the board
-snakeSquare.element = $("<div>").addClass("snake").appendTo(board);
+  // make the snakeSquare element and add it to the board
+  snakeSquare.element = $("<div>").addClass("snake").appendTo(board);
 
-// assign the row and column position
-snakeSquare.row = row;
-snakeSquare.column = column;
+  // assign the row and column position
+  snakeSquare.row = row;
+  snakeSquare.column = column;
 
-// set the snake’s position visually
-repositionSquare(snakeSquare);
+  // set the snake’s position visually
+  repositionSquare(snakeSquare);
 
-// if this is the head, give it a unique ID
-if (snake.body.length === 0) {
-  snakeSquare.element.attr("id", "snake-head");
+  // if this is the head, give it a unique ID
+  if (snake.body.length === 0) {
+    snakeSquare.element.attr("id", "snake-head");
+  }
+
+  // add the square to the snake’s body and update the tail
+  snake.body.push(snakeSquare);
+  snake.tail = snakeSquare;
 }
-
-// add the square to the snake’s body and update the tail
-snake.body.push(snakeSquare);
-snake.tail = snakeSquare;
-}
-
 
 /* 
   event.which returns the keycode of the key that is pressed when the
