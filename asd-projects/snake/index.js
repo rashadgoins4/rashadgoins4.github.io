@@ -95,6 +95,16 @@ function checkForNewDirection(event) {
   if (activeKey === KEY.LEFT) {
     snake.head.direction = "left";
   }
+  if (activeKey === KEY.RIGHT){
+    snake.head.direction = "right";
+  }
+  if (activeKey === KEY.UP){
+    snake.head.direction = "up";
+  }
+  if (activeKey === KEY.DOWN) {
+    snake.head.direction = "down";
+  }
+  
 
   // FILL IN THE REST
 
@@ -116,13 +126,42 @@ function moveSnake() {
 
   /* 
     TODO 8: determine the next row and column for the snake's head
-    
+   
     HINT: The snake's head will need to move forward 1 square based on the value
     of snake.head.direction which may be one of "left", "right", "up", or "down"
   */
+
+    if (snake.head.direction === "left") {
+  snake.head.column = snake.head.column - 1;
 }
+ else if (snake.head.direction === "right") {
+  snake.head.column = snake.head.column + 1;
+}
+else if (snake.head.direction === "up") {
+  snake.head.row = snake.head.row - 1;
+}
+else if (snake.head.direction === "down") {
+  snake.head.row = snake.head.row + 1;
+}
+repositionSquare(snake.head);
+  }
+
 
 // TODO 9: Create a new helper function
+  function moveBodyAToBodyB(BodyA, BodyB){
+    BodyA.row = BodyB.row
+    BodyA.column = BodyB.column;
+    BodyA.direction = BodyB.direction;
+  }
+// console.log("Moving body A to body B...");
+// setTimeout(() => {
+//   moveBodyAToBodyB(snake.body[1], snake.head);
+//   repositionSquare(snake.body[1]);
+// }, 2_000);
+
+
+
+
 
 function hasHitWall() {
   /* 
@@ -131,7 +170,14 @@ function hasHitWall() {
     
     HINT: What will the row and column of the snake's head be if this were the case?
   */
+for ( var i = snake.body.length - 1; i > 0; i -- /* start, stop, and update statements to loop backwards through the indexes of snake.body */ ) {
+    var currentSnakeSquare = snake.body[i];
+    var snakeSquareInFront = snake.body[i - 1];
 
+    moveBodyAToBodyB(currentSnakeSquare, snakeSquareInFront);
+
+    repositionSquare(currentSnakeSquare);
+}
   return false;
 }
 
@@ -255,7 +301,8 @@ function makeSnakeSquare(row, column) {
 */
 function handleKeyDown(event) {
   // TODO 7: make the handleKeyDown function register which key is pressed
-
+   activeKey = event.which;
+  console.log(activeKey);
   // If a valid direction key is pressed, start the game
   if (
     event.which === KEY.LEFT ||
